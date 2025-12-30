@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: verify-tag-push-
+  annotations:
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-target-branch: "[refs/tags/*]"
+spec:
+  pipelineSpec:
+    tasks:
+      - name: show
+        taskSpec:
+          steps:
+            - name: echo
+              image: registry.access.redhat.com/ubi9/ubi-minimal
+              script: |
+                echo "TAG PUSH RUN: {{ target_branch }} sha={{ revision }}"
